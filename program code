@@ -1,0 +1,94 @@
+const int Delayx = 60;
+int i;
+int restroom = 0;
+int Menwaiting = 0;
+int Womenwaiting = 0;
+semaphore max_capacity;
+semaphore woman;
+semaphore man;
+semaphore mutex;
+semaphore restroomcount;
+void Delay(void)
+{
+    int DelayTime;
+    DelayTime = random(Delayx);
+    for (i = 0; i<DelayTime; i++);
+}
+
+void Woman(void)
+{
+// for(;;){
+    Womenwaiting++;
+    //wait(mutex);
+    wait(woman);
+    wait(max_capacity);
+        //wait(woman);
+        wait(mutex);
+        wait(restroomcount);
+        cout << "A Woman has entered Restroom"<<endl;
+        cout << "People in the Restroom:" << restroom++ <<endl <<endl;
+        signal(restroomcount);
+        Womenwaiting--;
+        Delay();
+        wait(restroomcount);
+        cout << "A woman has exited Restroom"<<endl;
+        cout << "People in the Restroom:" << restroom-- <<endl<<endl;
+        signal(restroomcount);
+        signal(mutex);
+        signal(max_capacity);
+        if(Menwaiting > Womenwaiting){
+              signal(man);
+                  }
+              else{
+            signal(woman);
+        }
+        //signal(max_capacity);
+    //signal(man);
+// }
+}
+void Man(void)
+{
+// for(;;){
+    Menwaiting++;
+    //wait(mutex);
+    wait(man);
+    wait(max_capacity);
+    //wait(man);
+        wait(mutex);
+        wait(restroomcount);
+        cout <<"A Man has entered the Restroom"<<endl;
+        cout <<"People in the Restroom:" << restroom++ <<endl<<endl;
+        signal(restroomcount);
+        Menwaiting--;
+        //signal(mutex);
+        Delay();
+        //wait(mutex);
+        wait(restroomcount);
+        cout << "A man has exited the Restroom"<<endl;
+        cout <<"People in the Restroom:" << restroom-- <<endl<<endl;
+        signal(restroomcount);
+        signal(mutex);
+        signal(max_capacity);
+        if(Womenwaiting > Menwaiting){
+            signal(woman);
+            }
+        else{
+            signal(man);
+            }
+        //signal(max_capacity);
+        //signal(woman);
+//}
+}
+void main()
+{
+    initialsem(woman,1);
+    initialsem(man,1);
+    initialsem(max_capacity,4);
+    initialsem(mutex,1);
+    initialsem(restroomcount,1);
+    cobegin
+    {
+        Woman(); Woman(); Woman(); Woman(); Woman(); Man(); Man(); Man(); Man(); Man();
+    }
+
+}
