@@ -81,8 +81,7 @@ void Man(void)
 }
 void main()
 {
-    initialsem(woman,1);
-    initialsem(man,1);
+    system("color 5e");
     initialsem(max_capacity,4);
     initialsem(mutex,1);
     initialsem(restroomcount,1);
