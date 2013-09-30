@@ -12,3 +12,7 @@ only 1 person can get into the restroom at a time.
 V 1.1
 
 Colour of the CONSOLe(BAckground and foreground) changed to give it appealing look. :-)
+
+V 1.2
+
+Implementing GUI in unisex bathroom problem using java.
